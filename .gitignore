@@ -39,3 +39,16 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/lib/generated/prisma
+
+# SQLite database files
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
+# clerk configuration (can include secrets)
+/.clerk/
+
+.remotion-bundle

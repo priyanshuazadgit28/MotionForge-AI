@@ -1,0 +1,73 @@
+// MotionForge AI — Prisma Schema
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ── Models ────────────────────────────────────────────────
+
+model User {
+  id             String    @id @default(cuid())
+  clerkId        String    @unique
+  email          String    @unique
+  name           String
+  initial        String
+  avatarGradient String
+  credits        Int       @default(100)
+  projects       Project[]
+  createdAt      DateTime  @default(now())
+}
+
+model Project {
+  id                String   @id @default(cuid())
+  title             String
+  prompt            String
+  duration          String   // e.g. "10 sec"
+  ratio             String   // "16:9" | "9:16"
+  thumbnailGradient String
+  views             Int      @default(0)
+  likes             Int      @default(0)
+  status            String   @default("pending") // pending, generating_prompt, generating_theme, generating_code, completed, failed
+  themeConfig       Json?
+  remotionCode      String?
+  aiPrompt          String?
+  
+  exportStatus      String?  @default("idle") // idle, exporting, completed, failed
+  exportProgress    Int?     @default(0)
+  videoUrl          String?
+  
+  createdAt         DateTime @default(now())
+
+  // Optional relation to a User (community projects have authors, user projects may not)
+  author   User?   @relation(fields: [authorId], references: [id])
+  authorId String?
+
+  chatMessages ChatMessage[]
+  versions     ProjectVersion[]
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  role      String   // "user" | "ai"
+  content   String
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model ProjectVersion {
+  id           String   @id @default(cuid())
+  version      Int
+  projectId    String
+  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  prompt       String?
+  themeConfig  Json?
+  remotionCode String?
+  createdAt    DateTime @default(now())
+}
