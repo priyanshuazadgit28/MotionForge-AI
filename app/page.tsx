@@ -1,4 +1,5 @@
 import { Header } from "@/components/header";
+import { AntiGravityCanvas } from "@/components/ui/particle-effect-for-hero";
 import { HeroSection } from "@/components/hero-section";
 import { ProjectsGallery } from "@/components/projects-gallery";
 import { prisma } from "@/lib/prisma";
@@ -72,8 +73,15 @@ export default async function Home() {
         </div>
 
         {/* Gallery — community or user projects from DB */}
-        <div className="pt-16">
-          <ProjectsGallery projects={projects} isLoggedIn={!!userId} />
+        <div className="pt-16 relative">
+          <div className="absolute inset-0 z-0 opacity-50 overflow-hidden">
+            <AntiGravityCanvas />
+          </div>
+          <div className="relative z-10 pointer-events-none">
+            <div className="pointer-events-auto">
+              <ProjectsGallery projects={projects} isLoggedIn={!!userId} />
+            </div>
+          </div>
         </div>
       </main>
 

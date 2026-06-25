@@ -41,6 +41,9 @@ export default function RootLayout({
         lang="en"
         className={`${inter.variable} ${spaceGrotesk.variable} h-full antialiased`}
       >
+        <head>
+          <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet" />
+        </head>
         <body className="min-h-full flex flex-col">
           <AuthProvider>
             <TooltipProvider>{children}</TooltipProvider>
