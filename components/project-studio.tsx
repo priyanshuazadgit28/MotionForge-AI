@@ -174,11 +174,18 @@ export function ProjectStudio({ project }: ProjectStudioProps) {
       const fieldId = currentPath.join("-");
       
       if (typeof value === "object" && value !== null && !Array.isArray(value)) {
+        const renderedChildren = renderThemeEditor(value, currentPath);
+        const validChildren = Array.isArray(renderedChildren) 
+          ? renderedChildren.filter(Boolean) 
+          : renderedChildren;
+          
+        if (!validChildren || (Array.isArray(validChildren) && validChildren.length === 0)) return null;
+
         return (
-          <div key={fieldId} className="space-y-3 mt-4 border-l-2 border-white/10 pl-4 ml-1">
+          <div key={fieldId} className="space-y-3 mt-4 border-l-2 pl-4 ml-1" style={{ borderColor: "oklch(1 0 0 / 0.06)" }}>
             <h4 className="text-sm font-medium text-foreground capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</h4>
             <div className="space-y-4">
-              {renderThemeEditor(value, currentPath)}
+              {validChildren}
             </div>
           </div>
         );
@@ -187,6 +194,8 @@ export function ProjectStudio({ project }: ProjectStudioProps) {
       const isColor = typeof value === "string" && (value.startsWith("#") || value.startsWith("rgb") || value.startsWith("hsl") || key.toLowerCase().includes("color"));
       const isFont = key.toLowerCase().includes("font");
       
+      if (!isColor && !isFont) return null;
+
       return (
         <div key={fieldId} className="space-y-1.5">
           <label className="text-xs font-medium text-muted-foreground capitalize">
@@ -194,7 +203,10 @@ export function ProjectStudio({ project }: ProjectStudioProps) {
           </label>
           {isColor ? (
             <div className="flex items-center gap-3">
-              <div className="relative size-8 rounded-md overflow-hidden border border-white/20 shrink-0">
+              <div
+                className="relative size-8 rounded-lg overflow-hidden shrink-0"
+                style={{ border: "1px solid oklch(1 0 0 / 0.12)" }}
+              >
                 <input
                   type="color"
                   value={typeof value === 'string' && value.startsWith('#') ? value.slice(0, 7) : '#ffffff'}
@@ -206,34 +218,35 @@ export function ProjectStudio({ project }: ProjectStudioProps) {
                 type="text"
                 value={String(value)}
                 onChange={(e) => updateNestedTheme(currentPath, e.target.value)}
-                className="flex-1 bg-white/5 border border-white/10 rounded-md px-3 py-1.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-white/20"
+                className="flex-1 rounded-lg px-3 py-1.5 text-sm text-foreground focus:outline-none focus:ring-1"
+                style={{
+                  background: "oklch(1 0 0 / 0.04)",
+                  border: "1px solid oklch(1 0 0 / 0.08)",
+                }}
               />
             </div>
-          ) : isFont ? (
+          ) : (
             <div className="relative">
               <select
                 value={String(value)}
                 onChange={(e) => updateNestedTheme(currentPath, e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-md pl-3 pr-8 py-1.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-white/20 appearance-none"
+                className="w-full rounded-lg pl-3 pr-8 py-1.5 text-sm text-foreground focus:outline-none focus:ring-1 appearance-none cursor-pointer"
+                style={{
+                  background: "oklch(1 0 0 / 0.04)",
+                  border: "1px solid oklch(1 0 0 / 0.08)",
+                }}
               >
-                <option value={String(value)} className="bg-surface-base">{String(value)}</option>
-                <option value="Inter" className="bg-surface-base">Inter</option>
-                <option value="Roboto" className="bg-surface-base">Roboto</option>
-                <option value="Outfit" className="bg-surface-base">Outfit</option>
-                <option value="Playfair Display" className="bg-surface-base">Playfair Display</option>
-                <option value="Montserrat" className="bg-surface-base">Montserrat</option>
-                <option value="Space Grotesk" className="bg-surface-base">Space Grotesk</option>
-                <option value="DM Sans" className="bg-surface-base">DM Sans</option>
+                <option value={String(value)} style={{ background: "oklch(0.09 0.014 285)" }}>{String(value)}</option>
+                <option value="Inter" style={{ background: "oklch(0.09 0.014 285)" }}>Inter</option>
+                <option value="Roboto" style={{ background: "oklch(0.09 0.014 285)" }}>Roboto</option>
+                <option value="Outfit" style={{ background: "oklch(0.09 0.014 285)" }}>Outfit</option>
+                <option value="Playfair Display" style={{ background: "oklch(0.09 0.014 285)" }}>Playfair Display</option>
+                <option value="Montserrat" style={{ background: "oklch(0.09 0.014 285)" }}>Montserrat</option>
+                <option value="Space Grotesk" style={{ background: "oklch(0.09 0.014 285)" }}>Space Grotesk</option>
+                <option value="DM Sans" style={{ background: "oklch(0.09 0.014 285)" }}>DM Sans</option>
               </select>
               <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
             </div>
-          ) : (
-            <input
-              type="text"
-              value={String(value)}
-              onChange={(e) => updateNestedTheme(currentPath, e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-md px-3 py-1.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-white/20"
-            />
           )}
         </div>
       );
@@ -259,17 +272,35 @@ export function ProjectStudio({ project }: ProjectStudioProps) {
     <div className="flex h-[calc(100vh-64px)] overflow-hidden bg-background">
       
       {/* LEFT SIDEBAR */}
-      <aside className="w-80 lg:w-96 border-r border-white/5 bg-background flex flex-col shrink-0">
+      <aside
+        className="w-80 lg:w-96 flex flex-col shrink-0"
+        style={{
+          background: "oklch(0.06 0.013 285)",
+          borderRight: "1px solid oklch(1 0 0 / 0.05)",
+        }}
+      >
         {/* Tabs */}
-        <div className="flex items-center p-2 border-b border-white/5 gap-1">
+        <div
+          className="flex items-center p-2 gap-1"
+          style={{ borderBottom: "1px solid oklch(1 0 0 / 0.05)" }}
+        >
           <button
             onClick={() => setActiveTab("chat")}
             className={cn(
-              "flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold rounded-lg transition-all",
+              "flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold rounded-xl cursor-pointer",
+              "transition-all duration-300",
               activeTab === "chat" 
-                ? "bg-white/10 text-foreground shadow-sm" 
-                : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                ? "text-foreground" 
+                : "text-muted-foreground hover:text-foreground"
             )}
+            style={activeTab === "chat" ? {
+              background: "linear-gradient(135deg, oklch(0.65 0.22 285 / 0.15), oklch(0.72 0.20 200 / 0.08))",
+              boxShadow: "0 0 12px oklch(0.65 0.22 285 / 0.10), inset 0 1px 0 oklch(1 0 0 / 0.05)",
+              border: "1px solid oklch(0.65 0.22 285 / 0.15)",
+            } : {
+              background: "transparent",
+              border: "1px solid transparent",
+            }}
           >
             <MessageSquare className="size-4" />
             Chat
@@ -277,11 +308,20 @@ export function ProjectStudio({ project }: ProjectStudioProps) {
           <button
             onClick={() => setActiveTab("theme")}
             className={cn(
-              "flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold rounded-lg transition-all",
+              "flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold rounded-xl cursor-pointer",
+              "transition-all duration-300",
               activeTab === "theme" 
-                ? "bg-white/10 text-foreground shadow-sm" 
-                : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                ? "text-foreground" 
+                : "text-muted-foreground hover:text-foreground"
             )}
+            style={activeTab === "theme" ? {
+              background: "linear-gradient(135deg, oklch(0.65 0.22 285 / 0.15), oklch(0.72 0.20 200 / 0.08))",
+              boxShadow: "0 0 12px oklch(0.65 0.22 285 / 0.10), inset 0 1px 0 oklch(1 0 0 / 0.05)",
+              border: "1px solid oklch(0.65 0.22 285 / 0.15)",
+            } : {
+              background: "transparent",
+              border: "1px solid transparent",
+            }}
           >
             <Palette className="size-4" />
             Theme
@@ -295,14 +335,35 @@ export function ProjectStudio({ project }: ProjectStudioProps) {
               {/* Chat Messages */}
               <div className="flex-1 overflow-y-auto p-4 space-y-4">
                 {messages.map((msg, idx) => (
-                  <div key={idx} className={cn("flex w-full", msg.role === "user" ? "justify-end" : "justify-start")}>
+                  <div
+                    key={idx}
+                    className={cn(
+                      "flex w-full animate-fade-in-up",
+                      msg.role === "user" ? "justify-end" : "justify-start"
+                    )}
+                    style={{
+                      animationDuration: "0.3s",
+                      animationDelay: "0ms",
+                    }}
+                  >
                     <div className={cn(
                       "max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed",
                       msg.role === "user" 
-                        ? "bg-primary text-primary-foreground rounded-tr-sm" 
-                        : "bg-white/5 border border-white/5 text-foreground rounded-tl-sm"
-                    )}>
-                      {msg.role === "assistant" && <Sparkles className="size-3 text-brand-secondary mb-1.5" />}
+                        ? "rounded-tr-sm" 
+                        : "rounded-tl-sm"
+                    )}
+                    style={msg.role === "user" ? {
+                      background: "linear-gradient(135deg, oklch(0.65 0.22 285), oklch(0.72 0.20 200))",
+                      color: "oklch(0.98 0.002 285)",
+                      boxShadow: "0 4px 16px oklch(0.65 0.22 285 / 0.20)",
+                    } : {
+                      background: "oklch(1 0 0 / 0.04)",
+                      border: "1px solid oklch(1 0 0 / 0.06)",
+                      color: "oklch(0.90 0.005 285)",
+                      boxShadow: "inset 0 1px 0 oklch(1 0 0 / 0.04)",
+                    }}
+                    >
+                      {msg.role === "assistant" && <Sparkles className="size-3 mb-1.5" style={{ color: "oklch(0.72 0.20 200)" }} />}
                       {msg.content}
                     </div>
                   </div>
@@ -311,23 +372,35 @@ export function ProjectStudio({ project }: ProjectStudioProps) {
               </div>
 
               {/* Chat Input */}
-              <div className="p-3 border-t border-white/5 bg-background/80 backdrop-blur-md">
+              <div
+                className="p-3"
+                style={{
+                  borderTop: "1px solid oklch(1 0 0 / 0.05)",
+                  background: "oklch(0.06 0.013 285 / 0.90)",
+                  backdropFilter: "blur(12px)",
+                }}
+              >
                 <form 
                   onSubmit={handleSubmit}
-                  className="relative flex items-end bg-white/5 border border-white/10 rounded-[1.25rem] p-1.5 focus-within:ring-1 focus-within:ring-white/20 transition-all"
+                  className="relative flex items-end glass rounded-[1.25rem] p-1.5 glow-focus"
                 >
                   <textarea
                     value={input}
                     onChange={handleInputChange}
                     onKeyDown={handleKey}
                     placeholder="Chat with AI to refine..."
-                    className="w-full max-h-32 min-h-[40px] resize-none bg-transparent px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
+                    className="w-full max-h-32 min-h-[40px] resize-none bg-transparent px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
                     rows={1}
                   />
                   <button
                     type="submit"
                     disabled={!input.trim()}
-                    className="shrink-0 size-8 rounded-full flex items-center justify-center bg-primary text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary-hover transition-colors mb-0.5 mr-0.5"
+                    className="shrink-0 size-8 rounded-full flex items-center justify-center text-white disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer btn-press mb-0.5 mr-0.5"
+                    style={{
+                      background: "linear-gradient(135deg, oklch(0.65 0.22 285), oklch(0.72 0.20 200))",
+                      boxShadow: input.trim() ? "0 0 12px oklch(0.65 0.22 285 / 0.30)" : "none",
+                      transition: "box-shadow 0.3s ease, opacity 0.3s ease, transform 0.15s ease",
+                    }}
                   >
                     <Send className="size-4 -ml-0.5" />
                   </button>
@@ -337,7 +410,7 @@ export function ProjectStudio({ project }: ProjectStudioProps) {
           ) : (
             <div className="p-6 h-full overflow-y-auto">
               <div className="flex items-center gap-2 mb-6">
-                <Palette className="size-5 text-brand-secondary" />
+                <Palette className="size-5" style={{ color: "oklch(0.72 0.20 200)" }} />
                 <h3 className="text-foreground font-semibold">Theme Settings</h3>
               </div>
               
@@ -356,56 +429,90 @@ export function ProjectStudio({ project }: ProjectStudioProps) {
       </aside>
 
       {/* RIGHT MAIN AREA */}
-      <main className="flex-1 overflow-y-auto bg-surface-base p-6 lg:p-10 relative flex flex-col">
-        <div className="max-w-4xl mx-auto w-full space-y-8">
+      <main
+        className="flex-1 overflow-y-auto p-6 lg:p-10 relative flex flex-col"
+        style={{ background: "oklch(0.05 0.012 285)" }}
+      >
+        {/* Ambient neon glow for the main area */}
+        <div
+          className="absolute top-0 right-0 w-[500px] h-[500px] pointer-events-none"
+          style={{
+            background: "radial-gradient(circle, oklch(0.65 0.22 285 / 0.06) 0%, transparent 60%)",
+            filter: "blur(80px)",
+          }}
+          aria-hidden
+        />
+
+        <div className="max-w-4xl mx-auto w-full space-y-8 relative z-10">
           
           {/* Header Metadata */}
-          <div>
-            <h1 className="text-2xl lg:text-3xl font-bold tracking-tight text-foreground mb-3">
+          <div className="animate-fade-in-up" style={{ animationDuration: "0.5s" }}>
+            <h1
+              className="text-2xl lg:text-3xl font-bold tracking-tight text-foreground mb-3"
+              style={{ fontFamily: "var(--font-display, 'Space Grotesk', system-ui)" }}
+            >
               {project.title}
             </h1>
-            <div className="flex items-center gap-4 text-muted-foreground text-sm">
+            <div className="flex items-center gap-4 text-sm flex-wrap" style={{ color: "oklch(0.50 0.010 285)" }}>
               {project.author && (
                 <div className="flex items-center gap-2">
                   <div 
                     className="size-6 rounded-full flex items-center justify-center text-white font-bold text-[10px]"
-                    style={{ background: project.author.avatarGradient }}
+                    style={{
+                      background: project.author.avatarGradient,
+                      boxShadow: "0 0 8px oklch(0.65 0.22 285 / 0.15)",
+                    }}
                   >
                     {project.author.initial}
                   </div>
                   <span className="font-medium text-foreground">{project.author.name}</span>
                 </div>
               )}
-              <span>•</span>
+              <span style={{ color: "oklch(0.35 0.006 285)" }}>•</span>
               <span>{formattedDate}</span>
-              <span>•</span>
+              <span style={{ color: "oklch(0.35 0.006 285)" }}>•</span>
               <span>{project.ratio}</span>
-              <span>•</span>
+              <span style={{ color: "oklch(0.35 0.006 285)" }}>•</span>
               <span>{project.duration}</span>
             </div>
           </div>
 
           {/* Video Player Stage */}
           <div 
-            className="relative w-full overflow-hidden rounded-2xl shadow-2xl flex items-center justify-center group bg-black/40 border border-white/10"
+            className="relative w-full overflow-hidden rounded-2xl flex items-center justify-center group animate-fade-in-scale"
             style={{
               aspectRatio: project.ratio === "16:9" ? "16/9" : "9/16",
               maxHeight: project.ratio === "9:16" ? "70vh" : "auto",
-              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
+              background: "oklch(0.03 0.010 285)",
+              border: "1px solid oklch(1 0 0 / 0.06)",
+              boxShadow: "0 25px 60px -12px oklch(0 0 0 / 0.6), 0 0 40px oklch(0.65 0.22 285 / 0.05)",
+              animationDuration: "0.6s",
+              animationDelay: "0.1s",
             }}
           >
             {/* Exporting Overlay */}
             {isExporting && (
-              <div className="absolute inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm rounded-2xl">
-                <div className="flex flex-col items-center gap-6 max-w-sm w-full p-8 bg-card border rounded-2xl shadow-2xl">
-                  <div className="relative flex items-center justify-center size-20 rounded-full bg-primary/10">
-                    <Download className="size-10 text-primary animate-pulse" />
-                    <Loader2 className="absolute inset-0 size-full text-primary/30 animate-spin" strokeWidth={1} />
+              <div
+                className="absolute inset-0 z-50 flex items-center justify-center rounded-2xl"
+                style={{
+                  background: "oklch(0.05 0.012 285 / 0.85)",
+                  backdropFilter: "blur(12px)",
+                }}
+              >
+                <div
+                  className="flex flex-col items-center gap-6 max-w-sm w-full p-8 rounded-2xl glass"
+                  style={{
+                    boxShadow: "0 0 40px oklch(0.65 0.22 285 / 0.10)",
+                  }}
+                >
+                  <div className="relative flex items-center justify-center size-20 rounded-full" style={{ background: "oklch(0.65 0.22 285 / 0.10)" }}>
+                    <Download className="size-10 animate-pulse" style={{ color: "oklch(0.65 0.22 285)" }} />
+                    <Loader2 className="absolute inset-0 size-full animate-spin" style={{ color: "oklch(0.65 0.22 285 / 0.30)" }} strokeWidth={1} />
                   </div>
                   <div className="text-center space-y-2">
                     <h3 className="text-xl font-bold tracking-tight">Rendering Video</h3>
                     <p className="text-sm text-muted-foreground">
-                      Your video is being rendered in the cloud. This might take a minute...
+                      Your video is being rendered in the cloud. This might take a minute…
                     </p>
                   </div>
                 </div>
@@ -415,7 +522,13 @@ export function ProjectStudio({ project }: ProjectStudioProps) {
             {isGenerating ? (
               // Generating State
               <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center" style={{ background: project.thumbnailGradient }}>
-                <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background: "oklch(0 0 0 / 0.65)",
+                    backdropFilter: "blur(4px)",
+                  }}
+                />
                 <div className="relative z-10 flex flex-col items-center max-w-sm w-full">
                   <Loader2 className="size-10 text-white animate-spin mb-6" />
                   
@@ -425,15 +538,22 @@ export function ProjectStudio({ project }: ProjectStudioProps) {
                       const isCurrent = idx === currentStepIndex
 
                       return (
-                        <div key={step.id} className={cn("flex items-center gap-3 text-sm font-medium transition-all duration-300", 
-                          isComplete ? "text-white/60" : isCurrent ? "text-white scale-105" : "text-white/20"
-                        )}>
+                        <div
+                          key={step.id}
+                          className={cn(
+                            "flex items-center gap-3 text-sm font-medium transition-all duration-500",
+                            isComplete ? "text-white/60" : isCurrent ? "text-white scale-105" : "text-white/20"
+                          )}
+                        >
                           {isComplete ? (
-                            <CheckCircle2 className="size-4 text-emerald-400 shrink-0" />
+                            <CheckCircle2 className="size-4 shrink-0" style={{ color: "oklch(0.72 0.18 155)" }} />
                           ) : isCurrent ? (
-                            <Loader2 className="size-4 animate-spin shrink-0 text-brand-secondary" />
+                            <Loader2 className="size-4 animate-spin shrink-0" style={{ color: "oklch(0.72 0.20 200)" }} />
                           ) : (
-                            <div className="size-4 rounded-full border-2 border-white/20 shrink-0" />
+                            <div
+                              className="size-4 rounded-full shrink-0"
+                              style={{ border: "2px solid oklch(1 0 0 / 0.15)" }}
+                            />
                           )}
                           <span className="flex-1 text-left">{step.label}</span>
                         </div>
@@ -456,7 +576,14 @@ export function ProjectStudio({ project }: ProjectStudioProps) {
             ) : (
               // Completed State without code (Fallback)
               <div className="absolute inset-0 flex items-center justify-center" style={{ background: project.thumbnailGradient }}>
-                <button className="relative z-10 size-20 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20 transition-transform hover:scale-110 hover:bg-white/20">
+                <button className="relative z-10 size-20 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110 cursor-pointer btn-press"
+                  style={{
+                    background: "oklch(0 0 0 / 0.35)",
+                    backdropFilter: "blur(12px)",
+                    border: "1px solid oklch(1 0 0 / 0.15)",
+                    boxShadow: "0 0 24px oklch(0.65 0.22 285 / 0.20)",
+                  }}
+                >
                   <Play className="size-8 ml-1" fill="currentColor" />
                 </button>
               </div>
@@ -464,27 +591,42 @@ export function ProjectStudio({ project }: ProjectStudioProps) {
           </div>
 
           {/* Action Bar */}
-          <div className="flex items-center justify-between pt-6 border-t border-white/5">
-            <div className="flex items-center gap-4 text-muted-foreground text-sm font-medium">
-              <div className="flex items-center gap-2 hover:text-foreground cursor-pointer transition-colors">
+          <div
+            className="flex items-center justify-between pt-6"
+            style={{ borderTop: "1px solid oklch(1 0 0 / 0.05)" }}
+          >
+            <div className="flex items-center gap-4 text-sm font-medium" style={{ color: "oklch(0.45 0.008 285)" }}>
+              <div className="flex items-center gap-2 hover:text-foreground cursor-pointer transition-colors duration-300">
                 <Eye className="size-4" />
                 {project.views}
               </div>
-              <div className="flex items-center gap-2 hover:text-foreground cursor-pointer transition-colors">
+              <div className="flex items-center gap-2 hover:text-foreground cursor-pointer transition-colors duration-300">
                 <Heart className="size-4" />
                 {project.likes}
               </div>
             </div>
             
             <div className="flex items-center gap-3">
-              <Button variant="outline" size="sm" className="hidden sm:flex">
+              <Button
+                variant="outline"
+                size="sm"
+                className="hidden sm:flex cursor-pointer btn-press rounded-xl"
+                style={{
+                  background: "oklch(1 0 0 / 0.04)",
+                  borderColor: "oklch(1 0 0 / 0.08)",
+                }}
+              >
                 <Share2 className="mr-2 size-4" />
                 Share
               </Button>
               {videoUrl ? (
                 <Button 
-                  size="sm" 
-                  style={{ background: "oklch(0.65 0.22 285)" }}
+                  size="sm"
+                  className="cursor-pointer btn-press rounded-xl"
+                  style={{
+                    background: "linear-gradient(135deg, oklch(0.65 0.22 285), oklch(0.72 0.20 200))",
+                    boxShadow: "0 0 16px oklch(0.65 0.22 285 / 0.25)",
+                  }}
                   onClick={async () => {
                     try {
                       // Fetch the video to bypass cross-origin download restrictions
@@ -513,10 +655,14 @@ export function ProjectStudio({ project }: ProjectStudioProps) {
                   size="sm" 
                   onClick={handleExport} 
                   disabled={isExporting || isGenerating}
-                  style={{ background: "oklch(0.65 0.22 285)" }}
+                  className="cursor-pointer btn-press rounded-xl"
+                  style={{
+                    background: "linear-gradient(135deg, oklch(0.65 0.22 285), oklch(0.72 0.20 200))",
+                    boxShadow: "0 0 16px oklch(0.65 0.22 285 / 0.25)",
+                  }}
                 >
                   {isExporting ? <Loader2 className="mr-2 size-4 animate-spin" /> : <Download className="mr-2 size-4" />}
-                  {isExporting ? "Exporting..." : "Export"}
+                  {isExporting ? "Exporting…" : "Export"}
                 </Button>
               )}
             </div>

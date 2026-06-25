@@ -30,53 +30,67 @@ export default async function Home() {
       });
     }
   } else {
-    // Fetch all community projects (those that have an author)
+    // Fetch all community projects (those that have a demo author)
     projects = await prisma.project.findMany({
-      where: { authorId: { not: null } },
+      where: {
+        authorId: { not: null },
+        author: {
+          clerkId: {
+            startsWith: "mock_clerk_",
+          },
+        },
+      },
       include: { author: true },
       orderBy: { createdAt: "desc" },
     });
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="flex min-h-screen flex-col bg-background neon-bg">
+      {/* Third neon orb (middle) */}
+      <div className="neon-orb-accent" aria-hidden />
+
       {/* ── Header ─── */}
       <Header isLoggedIn={!!userId} />
 
       {/* ── Main Content ─── */}
-      <main id="main-content" className="flex-1">
+      <main id="main-content" className="flex-1 relative z-10">
         {/* Hero — prompt input */}
         <HeroSection />
 
-        {/* Divider */}
+        {/* Gradient Divider */}
         <div
           className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
           aria-hidden
         >
           <div
             className="h-px w-full"
-            style={{ background: "oklch(1 0 0 / 0.06)" }}
+            style={{
+              background: "linear-gradient(90deg, transparent 0%, oklch(0.65 0.22 285 / 0.20) 30%, oklch(0.72 0.20 200 / 0.15) 50%, oklch(0.65 0.22 285 / 0.20) 70%, transparent 100%)",
+            }}
           />
         </div>
 
         {/* Gallery — community or user projects from DB */}
-        <div className="pt-14">
+        <div className="pt-16">
           <ProjectsGallery projects={projects} isLoggedIn={!!userId} />
         </div>
       </main>
 
       {/* ── Footer ─── */}
       <footer
-        className="border-t px-4 py-8 text-center text-xs sm:px-6"
+        className="relative z-10 px-4 py-10 text-center text-xs sm:px-6"
         style={{
-          borderColor: "oklch(1 0 0 / 0.07)",
-          color: "oklch(0.40 0.008 285)",
+          borderTop: "1px solid oklch(1 0 0 / 0.05)",
+          color: "oklch(0.38 0.008 285)",
+          background: "oklch(0.04 0.010 285 / 0.60)",
+          backdropFilter: "blur(12px)",
         }}
       >
-        <div className="mx-auto max-w-7xl flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="mx-auto max-w-7xl flex flex-col sm:flex-row items-center justify-between gap-4">
           <span>
             © {new Date().getFullYear()}{" "}
-            <span style={{ color: "oklch(0.65 0.22 285)" }}>MotionForge AI</span>
+            <span className="text-shimmer font-semibold">MotionForge AI</span>
             . All rights reserved.
           </span>
           <nav className="flex items-center gap-5" aria-label="Footer navigation">
@@ -84,8 +98,8 @@ export default async function Home() {
               <a
                 key={item}
                 href={`/${item.toLowerCase()}`}
-                className="transition-colors hover:text-foreground"
-                style={{ color: "oklch(0.40 0.008 285)" }}
+                className="transition-colors duration-300 hover:text-foreground cursor-pointer"
+                style={{ color: "oklch(0.38 0.008 285)" }}
               >
                 {item}
               </a>

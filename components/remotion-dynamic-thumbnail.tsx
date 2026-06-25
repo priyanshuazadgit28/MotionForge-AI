@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Thumbnail } from "@remotion/player";
+import { Player, PlayerRef } from "@remotion/player";
 import * as React from "react";
 import * as Remotion from "remotion";
 import * as LucideReact from "lucide-react";
+import { createSafeRemotionProxy, createDeepSafeProxy } from "@/lib/remotion-safe-proxy";
 
 interface RemotionDynamicThumbnailProps {
   code: string;
@@ -14,6 +15,7 @@ interface RemotionDynamicThumbnailProps {
   width?: number;
   height?: number;
   className?: string;
+  isPlaying?: boolean;
 }
 
 export function RemotionDynamicThumbnail({
@@ -24,14 +26,15 @@ export function RemotionDynamicThumbnail({
   width = 1920,
   height = 1080,
   className = "",
+  isPlaying = false,
 }: RemotionDynamicThumbnailProps) {
   const [Component, setComponent] = useState<React.ComponentType<any> | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const playerRef = React.useRef<PlayerRef>(null);
 
   useEffect(() => {
     let isMounted = true;
     
-    // Dynamically import Babel to compile Remotion code
     import("@babel/standalone").then((Babel) => {
       try {
         const transpiled = Babel.transform(code, {
@@ -60,15 +63,17 @@ export function RemotionDynamicThumbnail({
           return exports.default || exports.GeneratedComposition || validExports[0];
         `;
 
+        // Inject SAFE Remotion proxy
+        const SafeRemotionModule = createSafeRemotionProxy();
         const func = new Function("React", "Remotion", "LucideReact", executableCode);
-        const DynamicallyGeneratedComponent = func(React, Remotion, LucideReact);
+        const DynamicallyGeneratedComponent = func(React, SafeRemotionModule, LucideReact);
 
         if (DynamicallyGeneratedComponent && isMounted) {
           setComponent(() => DynamicallyGeneratedComponent);
           setError(null);
         }
       } catch (err: any) {
-        console.error("Thumbnail compilation failed:", err);
+        console.warn("Thumbnail compilation failed:", err?.message);
         if (isMounted) setError(err.message || "Compilation failed");
       }
     });
@@ -76,29 +81,44 @@ export function RemotionDynamicThumbnail({
     return () => { isMounted = false; };
   }, [code]);
 
+  const safeFrames = Math.max(1, Math.round(durationInSeconds * fps));
+  const safeFrame = Math.min(30, Math.max(0, safeFrames - 1));
+
+  useEffect(() => {
+    if (!playerRef.current) return;
+    if (isPlaying) {
+      playerRef.current.play();
+    } else {
+      playerRef.current.pause();
+      playerRef.current.seekTo(safeFrame);
+    }
+  }, [isPlaying, safeFrame]);
+
   if (error) {
-    return (
-      <div className={`w-full h-full flex flex-col items-center justify-center p-4 text-center text-red-400 bg-red-400/10 ${className}`}>
-        <LucideReact.AlertTriangle className="size-6 mb-2 text-red-500 opacity-80" />
-        <span className="text-[10px] font-medium opacity-90 leading-tight">Video compilation failed</span>
-      </div>
-    );
+    return <ThumbnailFallback className={className} />;
   }
 
   if (!Component) {
     return <div className={`w-full h-full bg-black/40 animate-pulse ${className}`} />;
   }
 
+  const rawConfig = (themeConfig && typeof themeConfig === "object") ? themeConfig : {};
+  const safeInputProps = createDeepSafeProxy(rawConfig);
+
   return (
     <ThumbnailErrorBoundary className={className}>
-      <Thumbnail
+      <Player
+        ref={playerRef}
         component={Component}
-        inputProps={{ ...themeConfig }}
+        inputProps={safeInputProps}
         compositionWidth={width}
         compositionHeight={height}
-        frameToDisplay={30} // 1 second in, better than frame 0
-        durationInFrames={durationInSeconds * fps}
+        durationInFrames={safeFrames}
+        inFrame={0}
+        outFrame={isPlaying ? Math.min(safeFrames - 1, 3 * fps) : safeFrames - 1}
         fps={fps}
+        autoPlay={false}
+        loop
         className={className}
         style={{
           width: "100%",
@@ -110,7 +130,26 @@ export function RemotionDynamicThumbnail({
   );
 }
 
-// Simple Error Boundary to prevent user code from crashing the entire app
+/** Graceful fallback */
+function ThumbnailFallback({ className = "" }: { className?: string }) {
+  return (
+    <div
+      className={`w-full h-full flex items-center justify-center ${className}`}
+      style={{
+        background: "linear-gradient(135deg, oklch(0.12 0.020 285), oklch(0.08 0.016 285))",
+      }}
+    >
+      <div
+        className="flex size-10 items-center justify-center rounded-xl"
+        style={{ background: "oklch(1 0 0 / 0.06)" }}
+      >
+        <LucideReact.Film className="size-5" style={{ color: "oklch(0.50 0.010 285)" }} />
+      </div>
+    </div>
+  );
+}
+
+// Error Boundary — last line of defense
 class ThumbnailErrorBoundary extends React.Component<{ children: React.ReactNode, className?: string }, { hasError: boolean }> {
   constructor(props: { children: React.ReactNode, className?: string }) {
     super(props);
@@ -121,18 +160,13 @@ class ThumbnailErrorBoundary extends React.Component<{ children: React.ReactNode
     return { hasError: true };
   }
 
-  componentDidCatch(error: any, errorInfo: any) {
-    console.error("Thumbnail rendering error:", error, errorInfo);
+  componentDidCatch(error: any) {
+    console.warn("Thumbnail rendering error (caught):", error?.message);
   }
 
   render() {
     if (this.state.hasError) {
-      return (
-        <div className={`w-full h-full flex flex-col items-center justify-center p-4 text-center text-red-400 bg-red-400/10 ${this.props.className || ''}`}>
-          <LucideReact.AlertTriangle className="size-6 mb-2 text-red-500 opacity-80" />
-          <span className="text-[10px] font-medium opacity-90 leading-tight">Render Error</span>
-        </div>
-      );
+      return <ThumbnailFallback className={this.props.className} />;
     }
     return this.props.children;
   }

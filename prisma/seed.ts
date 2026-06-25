@@ -8,13 +8,7 @@
  */
 
 import "dotenv/config";
-import { Pool } from "pg";
-import { PrismaClient } from "../lib/generated/prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
-
-const pool = new Pool({ connectionString: process.env.DATABASE_URL! });
-const adapter = new PrismaPg(pool);
-const prisma = new PrismaClient({ adapter });
+import { prisma } from "../lib/prisma";
 
 async function main() {
   console.log("🌱  Seeding MotionForge AI database…");
@@ -186,6 +180,6 @@ main()
     console.error("❌  Seed failed:", e);
     process.exit(1);
   })
-  .finally(async () => {
-    await prisma.$disconnect();
+  .finally(() => {
+    process.exit(0);
   });

@@ -53,28 +53,28 @@
 }
 
 /* ============================================================
-   MotionForge AI — Dark-first design system
+   MotionForge AI — OLED Dark Design System (Redesigned)
    ============================================================ */
 
 :root {
-  /* ---- Shadcn token overrides (dark-first theme) ---- */
-  --background:           oklch(0.09 0.012 285);
+  /* ---- Shadcn token overrides (OLED-deep dark) ---- */
+  --background:           oklch(0.05 0.012 285);
   --foreground:           oklch(0.96 0.005 285);
-  --card:                 oklch(0.13 0.014 285);
+  --card:                 oklch(0.09 0.014 285);
   --card-foreground:      oklch(0.96 0.005 285);
-  --popover:              oklch(0.17 0.016 285);
+  --popover:              oklch(0.12 0.016 285);
   --popover-foreground:   oklch(0.96 0.005 285);
   --primary:              oklch(0.65 0.22 285);
   --primary-foreground:   oklch(0.98 0.002 285);
-  --secondary:            oklch(0.17 0.016 285);
+  --secondary:            oklch(0.12 0.016 285);
   --secondary-foreground: oklch(0.96 0.005 285);
-  --muted:                oklch(0.17 0.016 285);
+  --muted:                oklch(0.12 0.016 285);
   --muted-foreground:     oklch(0.55 0.010 285);
-  --accent:               oklch(0.20 0.018 285);
+  --accent:               oklch(0.15 0.018 285);
   --accent-foreground:    oklch(0.96 0.005 285);
   --destructive:          oklch(0.65 0.22 25);
-  --border:               oklch(1 0 0 / 0.08);
-  --input:                oklch(1 0 0 / 0.10);
+  --border:               oklch(1 0 0 / 0.06);
+  --input:                oklch(1 0 0 / 0.08);
   --ring:                 oklch(0.65 0.22 285);
   --radius:               0.75rem;
   --chart-1:              oklch(0.65 0.22 285);
@@ -82,13 +82,13 @@
   --chart-3:              oklch(0.75 0.25 330);
   --chart-4:              oklch(0.72 0.18 155);
   --chart-5:              oklch(0.80 0.18 80);
-  --sidebar:              oklch(0.11 0.013 285);
+  --sidebar:              oklch(0.07 0.013 285);
   --sidebar-foreground:   oklch(0.96 0.005 285);
   --sidebar-primary:      oklch(0.65 0.22 285);
   --sidebar-primary-foreground: oklch(0.98 0.002 285);
-  --sidebar-accent:       oklch(0.17 0.016 285);
+  --sidebar-accent:       oklch(0.12 0.016 285);
   --sidebar-accent-foreground: oklch(0.96 0.005 285);
-  --sidebar-border:       oklch(1 0 0 / 0.08);
+  --sidebar-border:       oklch(1 0 0 / 0.06);
   --sidebar-ring:         oklch(0.65 0.22 285);
 
   /* ---- MotionForge Brand Tokens ---- */
@@ -96,15 +96,16 @@
   --brand-primary-hover:  oklch(0.58 0.24 285);
   --brand-secondary:      oklch(0.72 0.20 200);
   --brand-accent:         oklch(0.75 0.25 330);
-  --brand-glow-primary:   oklch(0.65 0.22 285 / 0.25);
-  --brand-glow-secondary: oklch(0.72 0.20 200 / 0.20);
+  --brand-glow-primary:   oklch(0.65 0.22 285 / 0.30);
+  --brand-glow-secondary: oklch(0.72 0.20 200 / 0.25);
+  --brand-glow-accent:    oklch(0.75 0.25 330 / 0.20);
 
-  /* ---- Surface Tokens ---- */
-  --surface-base:         oklch(0.09 0.012 285);
-  --surface-elevated:     oklch(0.13 0.014 285);
-  --surface-overlay:      oklch(0.17 0.016 285);
-  --surface-border:       oklch(1 0 0 / 0.08);
-  --surface-border-glow:  oklch(0.65 0.22 285 / 0.35);
+  /* ---- Surface Tokens (deeper OLED) ---- */
+  --surface-base:         oklch(0.05 0.012 285);
+  --surface-elevated:     oklch(0.09 0.014 285);
+  --surface-overlay:      oklch(0.12 0.016 285);
+  --surface-border:       oklch(1 0 0 / 0.06);
+  --surface-border-glow:  oklch(0.65 0.22 285 / 0.40);
 
   /* ---- Text Tokens ---- */
   --text-primary:         oklch(0.96 0.005 285);
@@ -129,25 +130,25 @@
   --font-display: 'Space Grotesk', system-ui, sans-serif;
 }
 
-/* Dark class aliases (app is dark-first, so .dark mirrors :root) */
+/* Dark class aliases */
 .dark {
-  --background:           oklch(0.09 0.012 285);
+  --background:           oklch(0.05 0.012 285);
   --foreground:           oklch(0.96 0.005 285);
-  --card:                 oklch(0.13 0.014 285);
+  --card:                 oklch(0.09 0.014 285);
   --card-foreground:      oklch(0.96 0.005 285);
-  --popover:              oklch(0.17 0.016 285);
+  --popover:              oklch(0.12 0.016 285);
   --popover-foreground:   oklch(0.96 0.005 285);
   --primary:              oklch(0.65 0.22 285);
   --primary-foreground:   oklch(0.98 0.002 285);
-  --secondary:            oklch(0.17 0.016 285);
+  --secondary:            oklch(0.12 0.016 285);
   --secondary-foreground: oklch(0.96 0.005 285);
-  --muted:                oklch(0.17 0.016 285);
+  --muted:                oklch(0.12 0.016 285);
   --muted-foreground:     oklch(0.55 0.010 285);
-  --accent:               oklch(0.20 0.018 285);
+  --accent:               oklch(0.15 0.018 285);
   --accent-foreground:    oklch(0.96 0.005 285);
   --destructive:          oklch(0.65 0.22 25);
-  --border:               oklch(1 0 0 / 0.08);
-  --input:                oklch(1 0 0 / 0.10);
+  --border:               oklch(1 0 0 / 0.06);
+  --input:                oklch(1 0 0 / 0.08);
   --ring:                 oklch(0.65 0.22 285);
 }
 
@@ -161,11 +162,33 @@
   }
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
   }
 }
 
 /* ============================================================
-   Global Utility Classes
+   SMOOTH TRANSITIONS — Applied to ALL interactive elements
+   ============================================================ */
+
+/* Universal smooth transitions for interactive elements */
+a, button, input, select, textarea,
+[role="button"], [tabindex] {
+  transition:
+    color var(--transition-normal),
+    background-color var(--transition-normal),
+    border-color var(--transition-normal),
+    box-shadow var(--transition-normal),
+    opacity var(--transition-normal),
+    transform var(--transition-fast);
+}
+
+/* All text headings get smooth color transitions */
+h1, h2, h3, h4, h5, h6, p, span, label {
+  transition: color var(--transition-normal), opacity var(--transition-normal);
+}
+
+/* ============================================================
+   BRAND GRADIENTS
    ============================================================ */
 
 /* Brand gradient text */
@@ -191,78 +214,287 @@
   );
 }
 
-/* Glass effect */
+/* ============================================================
+   LIVE NEON BACKGROUND — Animated gradient orbs
+   ============================================================ */
+
+.neon-bg {
+  position: relative;
+  overflow: hidden;
+}
+
+.neon-bg::before,
+.neon-bg::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(120px);
+  will-change: transform;
+}
+
+/* Large indigo-violet orb — top-left drift */
+.neon-bg::before {
+  width: 700px;
+  height: 700px;
+  top: -10%;
+  left: -5%;
+  background: radial-gradient(
+    circle,
+    oklch(0.65 0.22 285 / 0.15) 0%,
+    oklch(0.65 0.22 285 / 0.05) 40%,
+    transparent 70%
+  );
+  animation: neon-drift-1 20s ease-in-out infinite;
+}
+
+/* Cyan-magenta orb — bottom-right drift */
+.neon-bg::after {
+  width: 600px;
+  height: 600px;
+  bottom: -15%;
+  right: -10%;
+  background: radial-gradient(
+    circle,
+    oklch(0.72 0.20 200 / 0.12) 0%,
+    oklch(0.75 0.25 330 / 0.06) 50%,
+    transparent 70%
+  );
+  animation: neon-drift-2 25s ease-in-out infinite;
+}
+
+/* Third orb — middle floating accent */
+.neon-orb-accent {
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  top: 40%;
+  left: 50%;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(100px);
+  background: radial-gradient(
+    circle,
+    oklch(0.75 0.25 330 / 0.10) 0%,
+    oklch(0.65 0.22 285 / 0.04) 50%,
+    transparent 70%
+  );
+  animation: neon-drift-3 30s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes neon-drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(80px, 60px) scale(1.1); }
+  50% { transform: translate(30px, 120px) scale(0.95); }
+  75% { transform: translate(-50px, 40px) scale(1.05); }
+}
+
+@keyframes neon-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(-70px, -50px) scale(1.08); }
+  50% { transform: translate(-20px, -100px) scale(0.92); }
+  75% { transform: translate(60px, -30px) scale(1.03); }
+}
+
+@keyframes neon-drift-3 {
+  0%, 100% { transform: translate(-50%, 0) scale(1); }
+  33% { transform: translate(-40%, 50px) scale(1.15); }
+  66% { transform: translate(-60%, -40px) scale(0.9); }
+}
+
+/* ============================================================
+   GLASSMORPHISM
+   ============================================================ */
+
 .glass {
   background: linear-gradient(
     135deg,
-    oklch(1 0 0 / 0.06) 0%,
+    oklch(1 0 0 / 0.05) 0%,
     oklch(1 0 0 / 0.02) 100%
   );
-  backdrop-filter: blur(12px) saturate(1.4);
-  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
   border: 1px solid oklch(1 0 0 / 0.08);
+  /* Inner top highlight for depth */
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.06);
 }
 
-/* Glow effect for prompt input */
+/* Stronger glass for header/modals */
+.glass-strong {
+  background: linear-gradient(
+    135deg,
+    oklch(1 0 0 / 0.07) 0%,
+    oklch(1 0 0 / 0.03) 100%
+  );
+  backdrop-filter: blur(28px) saturate(2.0);
+  -webkit-backdrop-filter: blur(28px) saturate(2.0);
+  border: 1px solid oklch(1 0 0 / 0.10);
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.08);
+}
+
+/* ============================================================
+   GLOW EFFECTS
+   ============================================================ */
+
+/* Focus glow for prompt inputs */
 .glow-focus:focus-within {
   box-shadow:
-    0 0 0 1px oklch(0.65 0.22 285 / 0.35),
-    0 0 20px oklch(0.65 0.22 285 / 0.12),
-    0 0 40px oklch(0.65 0.22 285 / 0.06);
-  border-color: oklch(0.65 0.22 285 / 0.35);
+    0 0 0 1px oklch(0.65 0.22 285 / 0.40),
+    0 0 24px oklch(0.65 0.22 285 / 0.15),
+    0 0 60px oklch(0.65 0.22 285 / 0.06),
+    inset 0 1px 0 oklch(1 0 0 / 0.06);
+  border-color: oklch(0.65 0.22 285 / 0.40);
+  transition: box-shadow 0.4s ease, border-color 0.4s ease;
 }
 
-/* Hero background gradient */
-.hero-bg {
-  background:
-    radial-gradient(
-      ellipse 80% 60% at 50% -10%,
-      oklch(0.65 0.22 285 / 0.18) 0%,
-      transparent 70%
-    ),
-    radial-gradient(
-      ellipse 40% 40% at 85% 30%,
-      oklch(0.72 0.20 200 / 0.08) 0%,
-      transparent 60%
-    ),
-    radial-gradient(
-      ellipse 30% 30% at 15% 60%,
-      oklch(0.75 0.25 330 / 0.06) 0%,
-      transparent 60%
-    );
+/* Animated pulsing glow ring for CTAs */
+.glow-pulse {
+  animation: pulse-glow 3s ease-in-out infinite;
 }
 
-/* Card hover effect */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow:
+      0 0 20px oklch(0.65 0.22 285 / 0.25),
+      0 0 40px oklch(0.65 0.22 285 / 0.10);
+  }
+  50% {
+    box-shadow:
+      0 0 30px oklch(0.65 0.22 285 / 0.40),
+      0 0 60px oklch(0.65 0.22 285 / 0.15),
+      0 0 90px oklch(0.65 0.22 285 / 0.05);
+  }
+}
+
+/* Neon border glow for cards on hover */
+.glow-border {
+  transition: box-shadow var(--transition-slow), border-color var(--transition-slow);
+}
+
+.glow-border:hover {
+  box-shadow:
+    0 0 0 1px oklch(0.65 0.22 285 / 0.30),
+    0 0 20px oklch(0.65 0.22 285 / 0.10),
+    0 4px 30px oklch(0 0 0 / 0.5);
+  border-color: oklch(0.65 0.22 285 / 0.30);
+}
+
+/* ============================================================
+   CARD EFFECTS
+   ============================================================ */
+
+/* Card hover with lift + colored shadow pool */
 .card-hover {
   transition:
     transform var(--transition-normal),
-    box-shadow var(--transition-normal),
-    border-color var(--transition-normal);
+    box-shadow var(--transition-slow),
+    border-color var(--transition-slow);
 }
 
 .card-hover:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px);
   box-shadow:
-    0 8px 32px oklch(0 0 0 / 0.4),
-    0 0 0 1px oklch(0.65 0.22 285 / 0.25);
+    0 12px 40px oklch(0.65 0.22 285 / 0.12),
+    0 4px 16px oklch(0 0 0 / 0.4),
+    0 0 0 1px oklch(0.65 0.22 285 / 0.20);
   border-color: oklch(0.65 0.22 285 / 0.25);
 }
 
-/* Noise texture overlay for depth */
-.noise::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  border-radius: inherit;
+/* Inner bevel for depth on dark cards */
+.card-bevel {
+  box-shadow:
+    inset 0 1px 0 oklch(1 0 0 / 0.06),
+    inset 0 -1px 0 oklch(0 0 0 / 0.2);
 }
 
-/* Fade in up animation */
+/* ============================================================
+   TEXT ANIMATIONS — Neon shimmer + glow
+   ============================================================ */
+
+/* Animated gradient shimmer on text */
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    oklch(0.65 0.22 285) 0%,
+    oklch(0.72 0.20 200) 25%,
+    oklch(0.75 0.25 330) 50%,
+    oklch(0.72 0.20 200) 75%,
+    oklch(0.65 0.22 285) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: text-shimmer-move 4s linear infinite;
+}
+
+@keyframes text-shimmer-move {
+  from { background-position: 0% center; }
+  to { background-position: 200% center; }
+}
+
+/* Neon text glow */
+.text-neon {
+  text-shadow:
+    0 0 8px oklch(0.65 0.22 285 / 0.50),
+    0 0 20px oklch(0.65 0.22 285 / 0.25),
+    0 0 40px oklch(0.65 0.22 285 / 0.10);
+}
+
+.text-neon-cyan {
+  text-shadow:
+    0 0 8px oklch(0.72 0.20 200 / 0.50),
+    0 0 20px oklch(0.72 0.20 200 / 0.25);
+}
+
+/* ============================================================
+   BUTTON EFFECTS
+   ============================================================ */
+
+/* Button press */
+.btn-press:active {
+  transform: scale(0.96);
+}
+
+/* Button glow hover */
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-glow::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    oklch(0.65 0.22 285 / 0.30),
+    oklch(0.72 0.20 200 / 0.20),
+    oklch(0.75 0.25 330 / 0.30)
+  );
+  z-index: -1;
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+  filter: blur(8px);
+}
+
+.btn-glow:hover::before {
+  opacity: 1;
+}
+
+/* ============================================================
+   ENTRANCE ANIMATIONS
+   ============================================================ */
+
+/* Fade in up */
 @keyframes fade-in-up {
   from {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
@@ -271,16 +503,54 @@
 }
 
 .animate-fade-in-up {
-  animation: fade-in-up 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: fade-in-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
+/* Fade in scale */
+@keyframes fade-in-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-fade-in-scale {
+  animation: fade-in-scale 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Slide in from left */
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Stagger delays */
 .animate-delay-100 { animation-delay: 0.1s; }
 .animate-delay-200 { animation-delay: 0.2s; }
 .animate-delay-300 { animation-delay: 0.3s; }
 .animate-delay-400 { animation-delay: 0.4s; }
 .animate-delay-500 { animation-delay: 0.5s; }
+.animate-delay-600 { animation-delay: 0.6s; }
+.animate-delay-700 { animation-delay: 0.7s; }
 
-/* Shimmer animation for skeleton / card hover */
+/* ============================================================
+   SHIMMER / SKELETON
+   ============================================================ */
+
 @keyframes shimmer {
   from { background-position: -200% center; }
   to   { background-position:  200% center; }
@@ -299,29 +569,105 @@
   animation: shimmer 2s linear infinite;
 }
 
-/* Reduce motion */
+/* ============================================================
+   NOISE TEXTURE
+   ============================================================ */
+
+.noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* ============================================================
+   DOT GRID PATTERN
+   ============================================================ */
+
+.dot-grid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    circle at center,
+    oklch(1 0 0 / 0.04) 1px,
+    transparent 1px
+  );
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-in-up,
+  .animate-fade-in-scale,
+  .animate-slide-in-left,
   .animate-shimmer,
-  .card-hover {
-    animation: none;
-    transition: none;
-    transform: none;
+  .text-shimmer,
+  .glow-pulse {
+    animation: none !important;
+  }
+
+  .card-hover,
+  .glow-border,
+  .btn-glow::before {
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .neon-bg::before,
+  .neon-bg::after,
+  .neon-orb-accent {
+    animation: none !important;
   }
 }
 
-/* Scrollbar styling */
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: oklch(1 0 0 / 0.12);
+  background: oklch(0.65 0.22 285 / 0.20);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: oklch(1 0 0 / 0.20);
+  background: oklch(0.65 0.22 285 / 0.40);
+}
+
+/* ============================================================
+   UTILITY — Smooth Nav Underline
+   ============================================================ */
+
+.nav-underline {
+  position: relative;
+}
+
+.nav-underline::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  right: 50%;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, oklch(0.65 0.22 285), oklch(0.72 0.20 200));
+  transition: left var(--transition-normal), right var(--transition-normal);
+}
+
+.nav-underline:hover::after {
+  left: 16px;
+  right: 16px;
 }
